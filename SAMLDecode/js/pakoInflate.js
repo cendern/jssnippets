@@ -3,7 +3,7 @@ function inflate(str) {
   return new TextDecoder("utf-8").decode(junk);
 }
 function uriDecodeAndb64d(inputString) {
-  var b64d = atob(decodeURIComponent(inputString));
+  return atob(decodeURIComponent(inputString));
 }
 function decodeButton(inputString, output64, output64inflated) {
   var b64d = uriDecodeAndb64d(inputString);
