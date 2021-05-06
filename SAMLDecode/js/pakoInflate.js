@@ -2,8 +2,11 @@ function inflate(str) {
   var junk = pako.inflateRaw(str);
   return new TextDecoder("utf-8").decode(junk);
 }
-function decodeButton(inputString, output64, output64inflated) {
+function uriDecodeAndb64d(inputString) {
   var b64d = atob(decodeURIComponent(inputString));
+}
+function decodeButton(inputString, output64, output64inflated) {
+  var b64d = uriDecodeAndb64d(inputString);
   if (outputb64) outputb64.value = b64d;
   if (outputb64deflated) outputb64deflated.value = inflate(b64d);
 }
