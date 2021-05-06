@@ -5,7 +5,7 @@ function inflate(str) {
 function decodeButton(inputString, output64, output64inflated) {
   var b64d = atob(decodeURIComponent(inputString));
   if (outputb64) outputb64.value = b64d;
-  if (outputb64deflated) outputb64ddeflated.value = inflate(b64d);
+  if (outputb64deflated) outputb64deflated.value = inflate(b64d);
 }
 function decodeButtonHelp() {
   decodeButton(
@@ -15,21 +15,24 @@ function decodeButtonHelp() {
   );
 }
 function toggleClass(el, className) {
-  if (el.classList.includes("className")) {
-    el.classList.remove("className");
+  if (el.classList.contains(className)) {
+    el.classList.remove(className);
+  } else {
+    el.classList.add(className);
   }
 }
 function toggleHide(el) {
   toggleClass(el, "hide");
 }
 
-function addShowHideEventListener(e) {
+function addShowHideEventListener(ev) {
   //find adjacent <a> and <textarea> elements and toggle their 'hide' class
-  const elms = [e, e.nextElementSibling()];
-  if (e.classList.includes("hider")) {
-    elms.push(e.nextElementSibling().nextElementSibling());
+  var e = ev.target;
+  const elms = [e, e.parentElement.nextElementSibling];
+  if (e.classList.contains("hider")) {
+    elms.push(e.nextElementSibling);
   } else {
-    elms.push(e.previousElementSibling());
+    elms.push(e.previousElementSibling);
   }
   elms.forEach(toggleHide);
 }
