@@ -1,0 +1,84 @@
+<!DOCTYPE=html>
+	<html>
+
+	<head>
+		<style>
+			textarea {
+				width: 100%;
+				height: 25%;
+			}
+
+			div.spacer {
+				margin: 10px;
+			}
+
+			.hide {
+				display: none;
+			}
+		</style>
+
+		<head>
+
+		<body>
+			<!--Like https://www.samltool.com/decode.php except without sending
+			your auth info to some random third party-->
+			<div>
+				<label>Paste your SAML string here</label>
+				<textarea id="input"></textarea>
+			</div>
+			<div class="spacer"></div>
+			<div>
+				<button id='btn'>decode and deflate</button>
+			</div>
+			<div class="spacer"></div>
+			<div>
+				<label>Only base64-decoded: <a class="hider">hide</a><a class="shower hide">show</a></label>
+				<textarea id="outputb64d"></textarea>
+			</div>
+			<div class="spacer"></div>
+			<div>
+				<label>base64-decoded and inflated:</label>
+				<textarea id="outputb64ddeflated"></textarea>
+			</div>
+			<script src="https://cdn.jsdelivr.net/gh/nodeca/pako@1.0.1/dist/pako.min.js"></script>
+			<script>
+				function inflate(str) {
+					var junk = pako.inflateRaw(str);
+					return new TextDecoder("utf-8").decode(junk);
+				}
+				function decodeButton(inputString, output64, output64inflated) {
+					var b64d = atob(decodeURIComponent(input));
+					if (outputb64) outputb64.value = b64d;
+					if (outputb64ddeflated) outputb64ddeflated.value = inflate(b64d);
+				}
+				function decodeButtonHelp() {
+					decodeButton(
+						document.getElementById('input').value,
+						document.getElementById('outputb64'),
+						document.getElementById('outputb64ddeflated')
+					)
+				}
+				function toggleClass(el, className) {
+					if (el.classList.includes('className')) { el.classList.remove('className') }
+				}
+				function toggleHide(el) { toggleClass(el, 'hide'); }
+
+				function addEventListenerEach(e) {
+					//find adjacent <a> and <textarea> elements and toggle their 'hide' class
+					const elms = [e, e.nextElementSibling()];
+					if (e.classList.includes('hider')) {
+						elms.push(e.nextElementSibling().nextElementSibling());
+					} else {
+						elms.push(e.previousElementSibling());
+					}
+					elms.forEach(toggleHide);
+				};
+
+				document.querySelector('#btn').addEventListener("click", decodeButtonHelp);
+
+				document.querySelectorAll('a.hider, a.shower')
+					.forEach(addEventListenerEach);
+			</script>
+		</body>
+
+	</html>
